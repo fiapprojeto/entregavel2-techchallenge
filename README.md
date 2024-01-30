@@ -1,1 +1,0 @@
-# entregavel2-techchallenge
