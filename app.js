@@ -4,6 +4,7 @@ const createProductRoutes = require('./src/adapters/routes/productRoutes');
 const createCategoryRoutes = require('./src/adapters/routes/categoryRoutes');
 const createClientRoutes = require('./src/adapters/routes/clientRoutes');
 const createOrderRoutes = require('./src/adapters/routes/orderRoutes'); // Adiciona as rotas para pedidos
+const createPaymentRoutes = require('./src/adapters/routes/paymentRoutes');
 const ProductService = require('./src/application/services/ProductService');
 const CategoryService = require('./src/application/services/CategoryService');
 const ClientService = require('./src/application/services/ClientService');
@@ -40,12 +41,14 @@ const orderService = new OrderService({ orderRepository }); // Cria o serviço d
 const productRoutes = createProductRoutes({ productService, categoryService });
 const categoryRoutes = createCategoryRoutes({ categoryService });
 const clientRoutes = createClientRoutes({ clientService });
-const orderRoutes = createOrderRoutes({ orderService, clientService }); // Adiciona rotas para pedidos
+const orderRoutes = createOrderRoutes({ orderService, clientService, productService}); // Adiciona rotas para pedidos
+const paymentRoutes = createPaymentRoutes({ orderService });
 
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/clients', clientRoutes);
 app.use('/orders', orderRoutes); // Adiciona rota para pedidos
+app.use('/payments', paymentRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -1,9 +1,10 @@
 // src/adapters/controllers/OrderController.js
 
 class OrderController {
-    constructor({ orderService, clientService }) {
+    constructor({ orderService, clientService, productService }) {
         this.orderService = orderService;
         this.clientService = clientService;
+        this.productService = productService;
     }
 
     async createOrder(req, res) {
@@ -15,6 +16,18 @@ class OrderController {
             if (!existingClient) {
                 return res.status(404).json({ error: 'Cliente não encontrado' });
             }
+
+            let total = 0;
+
+            for (const product of products) {
+                const productData = await this.productService.getProductById(product._id);
+
+                if (!productData) {
+                    return res.status(404).json({ error: 'Um dos produtos não estão disponivéis!' });
+                }
+                
+                total += productData.price * 1;
+            }
             
             // Cria o pedido associando ao cliente existente
             const orderData = {
@@ -22,8 +35,7 @@ class OrderController {
                 products,
                 status: 'Em andamento',
                 payment: 'Pendente',
-                //total: calculateTotal(products), // Implemente a lógica de cálculo do total
-                total: 100, // Implemente a lógica de cálculo do total
+                total: total.toFixed(2),
             };
 
             const createdOrder = await this.orderService.createOrder(orderData);

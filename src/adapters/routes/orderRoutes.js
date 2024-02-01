@@ -3,8 +3,8 @@
 const express = require('express');
 const OrderController = require('../controllers/OrderController');
 
-function createOrderRoutes({ orderService, clientService }) {
-    const orderController = new OrderController({ orderService, clientService });    
+function createOrderRoutes({ orderService, clientService, productService }) {
+    const orderController = new OrderController({ orderService, clientService, productService });    
     const router = express.Router();
 
     router.get('/processing', orderController.getOrdersProcessing.bind(orderController));
