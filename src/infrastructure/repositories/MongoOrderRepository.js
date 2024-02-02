@@ -37,6 +37,11 @@ class MongoOrderRepository extends OrderRepositoryPort {
         return result ? new Order(result) : null;
     }
 
+    async updatePayment(orderId, payment) {
+        const result = await OrderModel.findByIdAndUpdate(orderId, { payment }, { new: true }).lean();
+        return result ? new Order(result) : null;
+    }
+
     async getAll(sortBy = 'status', sortOrder = 'asc') {
         const sortOptions = { [sortBy]: sortOrder === 'asc' ? 1 : -1 };
         const ordersData = await OrderModel.find().sort(sortOptions).lean();

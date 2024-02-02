@@ -24,6 +24,10 @@ class OrderService {
         return this.orderRepository.updateStatus(orderId, status);
     }
 
+    async updateOrderPayment(orderId, payment) {
+        return this.orderRepository.updatePayment(orderId, payment);
+    }
+
     async getAllOrders() {
         return this.orderRepository.getAll();
     }
